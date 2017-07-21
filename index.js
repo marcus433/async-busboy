@@ -132,7 +132,7 @@ function onFile(filePromises, fieldname, file, filename, encoding, mimetype) {
     );
   if (!fileMeta[fieldname])
     fileMeta[filename] = [];
-  fileMeta[fieldname].push(filePromises.push(filePromise) - 1);
+  fileMeta[fieldname].push({ filename, idx: filePromises.push(filePromise) - 1 });
 }
 
 /**
