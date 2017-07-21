@@ -17,6 +17,7 @@ module.exports = function (request, options) {
   return new Promise((resolve, reject) => {
     const fields = {};
     const filePromises = [];
+    const fileMeta = {};
 
     request.on('close', cleanup);
 
@@ -67,7 +68,7 @@ module.exports = function (request, options) {
         Promise.all(filePromises)
           .then((files) => {
             cleanup();
-            resolve({fields, files});
+            resolve({ fields, files, fileMeta });
           })
           .catch(reject);
       }
@@ -129,7 +130,9 @@ function onFile(filePromises, fieldname, file, filename, encoding, mimetype) {
       )
     .on('error', reject)
     );
-  filePromises.push(filePromise);
+  if (!fileMeta[fieldname])
+    fileMeta[filename] = [];
+  fileMeta[fieldname].push(filePromises.push(filePromise) - 1);
 }
 
 /**
