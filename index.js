@@ -130,9 +130,13 @@ function onFile(filePromises, fileMeta, fieldname, file, filename, encoding, mim
       )
     .on('error', reject)
     );
-  if (!fileMeta[fieldname])
-    fileMeta[filename] = [];
-  fileMeta[fieldname].push({ filename, idx: filePromises.push(filePromise) - 1 });
+  if (fieldname) {
+    if (!fileMeta[fieldname])
+      fileMeta[fieldname] = [];
+    fileMeta[fieldname].push({ filename, idx: filePromises.push(filePromise) - 1 });
+  } else {
+    filePromises.push(filePromise);
+  }
 }
 
 /**
